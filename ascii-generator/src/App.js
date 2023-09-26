@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { useTheme } from './ThemeContext';
+import axios from 'axios';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -23,18 +24,19 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const ascii = convertTextToAscii(inputText);
-    setAsciiOutput(ascii);
-  };
-
-  function convertTextToAscii(text) {
-    // This is a basic example. You can expand on this logic.
-    return text.split('').map(char => char.charCodeAt(0)).join(' ');
-  }
+    axios.post('http://localhost:5000/generate-ascii', { text: inputText })
+        .then(response => {
+            const asciiResult = response.data.result;
+            setAsciiOutput(asciiResult);
+        })
+        .catch(error => {
+            console.error("Error generating ASCII:", error);
+        });
+};
 
   return (
     <div className={`App ${theme}`}>
-      <button className = "lightmode" onClick={toggleTheme}>
+      <button className="lightmode" onClick={toggleTheme}>
          {theme === 'dark' ? 'Light' : 'Dark'} Mode
       </button>
       <h1>ASCII Generator</h1>

@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
 # Import the necessary functions from the ASCII logic files
 from ascii_generators import ascii_generators, img2ascii_1, img2ascii_2, txt2ascii_1
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/generate-ascii": {"origins": "http://localhost:3000"}})
 
 @app.route('/convert-text-to-ascii', methods=['POST'])
 def convert_text_to_ascii():
