@@ -24,15 +24,20 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/generate-ascii', { text: inputText })
-        .then(response => {
-            const asciiResult = response.data.result;
-            setAsciiOutput(asciiResult);
-        })
-        .catch(error => {
-            console.error("Error generating ASCII:", error);
-        });
+    axios.post('http://localhost:5000/generate-ascii', { text: inputText }, {
+        headers: {
+            'Content-Type': 'application/json',  // Specify the content type
+        },
+    })
+    .then(response => {
+        const asciiResult = response.data.result;
+        setAsciiOutput(asciiResult);
+    })
+    .catch(error => {
+        console.error("Error generating ASCII:", error);
+    });
 };
+
 
   return (
     <div className={`App ${theme}`}>
